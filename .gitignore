@@ -1,4 +1,4 @@
-dist
+src/scala/dist
 node_modules
 yarn-error.log
 .npmrc
