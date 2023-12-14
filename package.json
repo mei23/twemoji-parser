@@ -7,6 +7,9 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "babel src --out-dir dist --ignore test.js",
     "generate": "./src/scala/scripts/generate.sh",
