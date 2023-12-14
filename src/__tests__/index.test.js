@@ -1,5 +1,5 @@
 // Copyright Twitter Inc. Licensed under MIT
-// https://github.com/twitter/twemoji-parser/blob/master/LICENSE.md
+// https://github.com/jdecked/twemoji-parser/blob/master/LICENSE.md
 import { parse, TypeName } from '..';
 
 test('TypeName is exported', () => {
@@ -95,18 +95,18 @@ describe('parse', () => {
   });
 
   describe('URLs', () => {
-    test('use MaxCDN SVGs by default', () => {
+    test('use jsDelivr SVGs by default', () => {
       expect(parse('I \u2764 emoji!')).toMatchObject([
         {
-          url: 'https://twemoji.maxcdn.com/v/latest/svg/2764.svg'
+          url: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/2764.svg'
         }
       ]);
     });
 
-    test('can ask for MaxCDN PNGs', () => {
+    test('can ask for jsDelivr PNGs', () => {
       expect(parse('I \u2764 emoji!', { assetType: 'png' })).toMatchObject([
         {
-          url: 'https://twemoji.maxcdn.com/v/latest/72x72/2764.png'
+          url: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/72x72/2764.png'
         }
       ]);
     });
@@ -114,7 +114,7 @@ describe('parse', () => {
     test('non-png assetType defaults back to SVG', () => {
       expect(parse('I \u2764 emoji!', { assetType: 'foobar' })).toMatchObject([
         {
-          url: 'https://twemoji.maxcdn.com/v/latest/svg/2764.svg'
+          url: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/2764.svg'
         }
       ]);
     });
@@ -805,6 +805,44 @@ describe('version spot checks', () => {
         {
           indices: [5, 9],
           text: '\ud83e\udef2\ud83c\udffd'
+        }
+      ]);
+    });
+  });
+
+  describe('Emoji 15.0', () => {
+    test('single-codepoint leftward pushing hand with no skintone', () => {
+      expect(parse('\ud83e\udef7')).toMatchObject([
+        {
+          indices: [0, 2],
+          text: '\ud83e\udef7'
+        }
+      ]);
+    });
+
+    test('single-codepoint rightward pushing hand with skintone', () => {
+      expect(parse('\ud83e\udef8\ud83c\udffb')).toMatchObject([
+        {
+          indices: [0, 4],
+          text: '\ud83e\udef8\ud83c\udffb'
+        }
+      ]);
+    });
+
+    test('black bird', () => {
+      expect(parse('\ud83d\udc26\u200d\u2b1b')).toMatchObject([
+        {
+          indices: [0, 4],
+          text: '\ud83d\udc26\u200d\u2b1b'
+        }
+      ]);
+    });
+
+    test('wing', () => {
+      expect(parse('\ud83e\udebd')).toMatchObject([
+        {
+          indices: [0, 2],
+          text: '\ud83e\udebd'
         }
       ]);
     });
